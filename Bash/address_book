@@ -1,0 +1,50 @@
+#!/bin/bash
+
+# This script adds names, addresses, and phone numbers to a text file called Address-book
+
+ADD_BOOK="$HOME/Projects/Bash/Address-Book"
+
+if [[ ! -f "$ADD_BOOK" ]]; then
+	touch "$ADD_BOOK"
+fi
+
+function add_info() {
+echo -n "Please enter a first and last name to add to your Address Book: "
+read first_name last_name
+echo
+
+grep -i "$first_name $last_name" "$ADD_BOOK"
+GREP_NAME=`grep -i "$first_name $last_name" "$ADD_BOOK"`
+
+if [[ $? == 0 ]]; then
+	echo -n "That name is already in your book. Would you like to modify it? "
+	read yn
+	if [[ "$yn" == "y" ]]; then
+		sed -i "s:$GREP_NAME::g" $ADD_BOOK
+		sed -i '/^\s*$/d' $ADD_BOOK
+		echo
+		echo "Erased..."
+		echo
+		add_info
+	elif [[ "$yn" == "n" ]]; then
+	echo
+	echo "Not modifying..."
+	echo
+	exit 1
+	fi
+else
+	echo "That name is not in your Address Book."
+	echo
+	echo -n "Please enter Address: "
+	read address
+	echo
+	echo -n "Please enter phone number: "
+	read phone_number
+	echo "$first_name $last_name		$address	$phone_number" >> $ADD_BOOK
+	echo "Added entry successfully."
+	echo
+fi
+
+}
+
+add_info

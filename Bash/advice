@@ -1,0 +1,30 @@
+#!/bin/bash
+
+FORTUNE=/usr/bin/fortune
+
+while true; do
+	echo
+	echo "On which topic do you want advice?"
+cat << topics
+	politics
+	love
+	life
+	jokes
+	sports
+	kernelnewbies
+	sports
+	magic
+	drugs
+	education
+topics
+
+	echo
+	echo -n "Make your choice: "
+		read topic
+	echo
+	echo "Free advice on the topic of $topic: "
+		echo
+		$FORTUNE $topic
+		echo
+
+done
